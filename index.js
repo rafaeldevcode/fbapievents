@@ -12,7 +12,9 @@ class FbEventsApi {
 
     init () {
         if (this.pixel !== null) {
-            fbq('init', this.pixel);
+            const userData = this.getUserData();
+
+            fbq('init', this.pixel, userData);
 
             this.events.forEach((event) => {
                 this.track(event);
@@ -23,20 +25,16 @@ class FbEventsApi {
     }
 
     track (event, data = undefined) {
+        console.log(window.fbq)
         if (this.pixel !== null) {
             if (typeof event === 'function') {
                 event();
             } else {
-                const userData = this.getUserData();
-                const eventData = this.getEventData(event);
-    
                 if (data !== undefined) {
-                    Object.keys(data).forEach((key) => {
-                        userData[key] = data[key];
-                    });
+                    fbq('track', event, data);
+                } else {
+                    fbq('track', event);
                 }
-    
-                fbq('trackSingle', this.pixel, event, userData, eventData);
             }
         }
 
