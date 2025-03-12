@@ -1,8 +1,8 @@
 'use strict';
 
 class FbEventsApi {
-    constructor (pixelDefault , events = []) {
-        this.pixel = this.getPixel(pixelDefault);
+    constructor (pixelDefault, events = [], pixelParamName = 'fb') {
+        this.pixel = this.getPixel(pixelDefault, pixelParamName);
         this.events = Array.isArray(events) ? events : [events];
         this.eventTime = Math.floor(Date.now() / 1e3) - 60;
         this.id = this.getUniqueEventId();
@@ -134,8 +134,8 @@ class FbEventsApi {
         }
     }
 
-    getPixel (pixelDefault) {
-        const pixelParam = this.getParams('fb');
+    getPixel (pixelDefault, pixelParamName) {
+        const pixelParam = this.getParams(pixelParamName);
 
         return pixelParam === null ? pixelDefault : pixelParam;
     }
